@@ -33,7 +33,7 @@ class MongoModels {
     }
 
 
-    static createIndexes() {
+    static async createIndexes() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -87,20 +87,17 @@ class MongoModels {
             if (result.hasOwnProperty('value') && !result.hasOwnProperty('_id')) {
                 if (result.value) {
                     result = new this(result.value);
-                }
-                else {
+                } else {
                     result = undefined;
                 }
-            }
-            else if (result.hasOwnProperty('ops')) {
+            } else if (result.hasOwnProperty('ops')) {
                 result.ops.forEach((item, index) => {
 
                     result.ops[index] = new self(item);
                 });
 
                 result = result.ops;
-            }
-            else if (result.hasOwnProperty('_id')) {
+            } else if (result.hasOwnProperty('_id')) {
                 result = new this(result);
             }
         }
@@ -136,11 +133,11 @@ class MongoModels {
         sort = this.sortAdapter(sort);
 
         Async.auto({
-            count: function (done) {
+            count: function(done) {
 
                 self.count(filter, done);
             },
-            find: function (done) {
+            find: function(done) {
 
                 const options = {
                     limit,
@@ -225,7 +222,7 @@ class MongoModels {
     }
 
 
-    static aggregate() {
+    static async aggregate() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -237,7 +234,7 @@ class MongoModels {
     }
 
 
-    static count() {
+    static async count() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -249,7 +246,7 @@ class MongoModels {
     }
 
 
-    static distinct() {
+    static async distinct() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -261,7 +258,7 @@ class MongoModels {
     }
 
 
-    static find() {
+    static async find() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -275,7 +272,7 @@ class MongoModels {
     }
 
 
-    static findOne() {
+    static async findOne() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -290,7 +287,7 @@ class MongoModels {
     }
 
 
-    static findOneAndUpdate() {
+    static async findOneAndUpdate() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -301,7 +298,9 @@ class MongoModels {
         const callback = this.resultFactory.bind(this, args.pop());
         const filter = args.shift();
         const doc = args.shift();
-        const options = Hoek.applyToDefaults({ returnOriginal: false }, args.pop() || {});
+        const options = Hoek.applyToDefaults({
+            returnOriginal: false
+        }, args.pop() || {});
 
         args.push(filter);
         args.push(doc);
@@ -312,7 +311,7 @@ class MongoModels {
     }
 
 
-    static findOneAndDelete() {
+    static async findOneAndDelete() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -327,7 +326,7 @@ class MongoModels {
     }
 
 
-    static findOneAndReplace() {
+    static async findOneAndReplace() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -338,7 +337,9 @@ class MongoModels {
         const callback = this.resultFactory.bind(this, args.pop());
         const filter = args.shift();
         const doc = args.shift();
-        const options = Hoek.applyToDefaults({ returnOriginal: false }, args.pop() || {});
+        const options = Hoek.applyToDefaults({
+            returnOriginal: false
+        }, args.pop() || {});
 
         args.push(filter);
         args.push(doc);
@@ -349,7 +350,7 @@ class MongoModels {
     }
 
 
-    static findById() {
+    static async findById() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -362,9 +363,10 @@ class MongoModels {
         let filter;
 
         try {
-            filter = { _id: this._idClass(id) };
-        }
-        catch (exception) {
+            filter = {
+                _id: this._idClass(id)
+            };
+        } catch (exception) {
             return callback(exception);
         }
 
@@ -374,7 +376,7 @@ class MongoModels {
     }
 
 
-    static findByIdAndUpdate() {
+    static async findByIdAndUpdate() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -385,13 +387,16 @@ class MongoModels {
         const id = args.shift();
         const update = args.shift();
         const callback = this.resultFactory.bind(this, args.pop());
-        const options = Hoek.applyToDefaults({ returnOriginal: false }, args.pop() || {});
+        const options = Hoek.applyToDefaults({
+            returnOriginal: false
+        }, args.pop() || {});
         let filter;
 
         try {
-            filter = { _id: this._idClass(id) };
-        }
-        catch (exception) {
+            filter = {
+                _id: this._idClass(id)
+            };
+        } catch (exception) {
             return callback(exception);
         }
 
@@ -399,7 +404,7 @@ class MongoModels {
     }
 
 
-    static findByIdAndDelete() {
+    static async findByIdAndDelete() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -413,9 +418,10 @@ class MongoModels {
         let filter;
 
         try {
-            filter = { _id: this._idClass(id) };
-        }
-        catch (exception) {
+            filter = {
+                _id: this._idClass(id)
+            };
+        } catch (exception) {
             return callback(exception);
         }
 
@@ -423,7 +429,7 @@ class MongoModels {
     }
 
 
-    static insertMany() {
+    static async insertMany() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -438,7 +444,7 @@ class MongoModels {
     }
 
 
-    static insertOne() {
+    static async insertOne() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -453,7 +459,7 @@ class MongoModels {
     }
 
 
-    static updateMany() {
+    static async updateMany() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -482,7 +488,7 @@ class MongoModels {
     }
 
 
-    static updateOne() {
+    static async updateOne() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -511,7 +517,7 @@ class MongoModels {
     }
 
 
-    static replaceOne() {
+    static async replaceOne() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -540,7 +546,7 @@ class MongoModels {
     }
 
 
-    static deleteOne() {
+    static async deleteOne() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {
@@ -563,7 +569,7 @@ class MongoModels {
     }
 
 
-    static deleteMany() {
+    static async deleteMany() {
 
         const args = new Array(arguments.length);
         for (let i = 0; i < args.length; ++i) {

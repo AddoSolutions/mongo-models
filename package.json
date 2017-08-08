@@ -1,31 +1,40 @@
 {
-  "name": "mongo-models",
-  "version": "1.3.1",
-  "description": "Map JavaScript classes to MongoDB collections",
-  "main": "index.js",
-  "scripts": {
-    "test": "lab -c -L"
-  },
-  "repository": {
+  "_from": "github:AddoSolutions/mongo-models",
+  "_id": "mongo-models@1.3.1",
+  "_inBundle": false,
+  "_integrity": "sha1-m0ZJqCSV+uHwmBKUOMCovMKdsqg=",
+  "_location": "/mongo-models",
+  "_phantomChildren": {},
+  "_requested": {
     "type": "git",
-    "url": "git@github.com:jedireza/mongo-models.git"
+    "raw": "AddoSolutions/mongo-models",
+    "rawSpec": "AddoSolutions/mongo-models",
+    "saveSpec": "github:AddoSolutions/mongo-models",
+    "fetchSpec": null,
+    "gitCommittish": "master"
   },
-  "keywords": [
-    "mongo",
-    "mongodb",
-    "model",
-    "models",
-    "odm"
+  "_requiredBy": [
+    "#USER",
+    "/"
   ],
-  "engines": {
-    "node": ">=4.0.0"
+  "_resolved": "github:AddoSolutions/mongo-models#4deca139c79add15dccf4bc07ea26494219f4662",
+  "_spec": "AddoSolutions/mongo-models",
+  "_where": "/home/centos/pbxtool",
+  "author": {
+    "name": "Reza Akhavan",
+    "email": "reza@akhavan.me"
   },
-  "author": "Reza Akhavan <reza@akhavan.me>",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/jedireza/mongo-models/issues"
   },
-  "homepage": "https://github.com/jedireza/mongo-models",
+  "bundleDependencies": false,
+  "dependencies": {
+    "async": "2.x.x",
+    "hoek": "4.x.x",
+    "joi": "10.x.x"
+  },
+  "deprecated": false,
+  "description": "Map JavaScript classes to MongoDB collections",
   "devDependencies": {
     "code": "4.x.x",
     "lab": "13.x.x",
@@ -33,12 +42,29 @@
     "opn-cli": "3.x.x",
     "proxyquire": "1.x.x"
   },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "homepage": "https://github.com/jedireza/mongo-models",
+  "keywords": [
+    "mongo",
+    "mongodb",
+    "model",
+    "models",
+    "odm"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "mongo-models",
   "peerDependencies": {
     "mongodb": "2.x.x"
   },
-  "dependencies": {
-    "async": "2.x.x",
-    "hoek": "4.x.x",
-    "joi": "10.x.x"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jedireza/mongo-models.git"
+  },
+  "scripts": {
+    "test": "lab -c -L"
+  },
+  "version": "1.3.1"
 }
