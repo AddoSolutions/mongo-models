@@ -64,14 +64,24 @@ class MongoModels {
             args[i] = arguments[i];
         }
 
-        const next = args.shift();
+        var first = args.shift();
+        var next = first,
+            resolve = false,
+            reject = false;
+        if (first && first.forEach && first.length == 4) {
+            var [next, resolve, reject] = first;
+        }
+        if (typeof next !== 'function' || !next || !next.apply) next = false;
+
         const err = args.shift();
         let result = args.shift();
 
         if (err) {
             args.unshift(result);
             args.unshift(err);
-            return next.apply(undefined, args);
+            if (reject) reject(err);
+            if (next) return next.apply(undefined, args);
+            return;
         }
 
         const self = this;
@@ -104,7 +114,8 @@ class MongoModels {
 
         args.unshift(result);
         args.unshift(err);
-        next.apply(undefined, args);
+        if (resolve) resolve(result);
+        if (next) next.apply(undefined, args);
     }
 
 
@@ -265,10 +276,16 @@ class MongoModels {
             args[i] = arguments[i];
         }
 
-        const collection = MongoModels.db.collection(this.collection);
-        const callback = this.resultFactory.bind(this, args.pop());
+        return new Promise((resolve, reject) => {
+            const collection = MongoModels.db.collection(this.collection);
 
-        collection.find.apply(collection, args).toArray(callback);
+            var cb = false;
+            if (typeof args[args.length - 1] == 'function') cb = args.pop();
+            const callback = this.resultFactory.bind(this, [cb, resolve, reject, true]);
+
+            collection.find.apply(collection, args).toArray(callback);
+
+        });
     }
 
 
@@ -279,11 +296,17 @@ class MongoModels {
             args[i] = arguments[i];
         }
 
-        const collection = MongoModels.db.collection(this.collection);
-        const callback = this.resultFactory.bind(this, args.pop());
+        return new Promise((resolve, reject) => {
+            const collection = MongoModels.db.collection(this.collection);
 
-        args.push(callback);
-        collection.findOne.apply(collection, args);
+            var cb = false;
+            if (typeof args[args.length - 1] == 'function') cb = args.pop();
+            const callback = this.resultFactory.bind(this, [cb, resolve, reject, true]);
+
+            args.push(callback);
+            collection.findOne.apply(collection, args);
+        });
+
     }
 
 
